@@ -7,7 +7,7 @@
 
 [x] YES, I know that [Kompose](https://kompose.io/) exists, but I am not a huge fan of the result (even if it seems super powerful)
 
-You can check the input in [app_list.yaml]() and the output in [apps/TEMPLATE-myAppName.yaml]()
+You can check the input in [app_list.yaml](https://github.com/pedrosanchezito/linuxserver-to-kubernetes/blob/master/app_list.yaml) and the output in [apps/TEMPLATE-myAppName.yaml](https://github.com/pedrosanchezito/linuxserver-to-kubernetes/blob/master/apps/TEMPLATE-myAppName.yaml)
 
 ## Default config (well, my homelab)
 - a working [k3s](https://k3s.io/) (or k8s cluster including a CNI and LB)
