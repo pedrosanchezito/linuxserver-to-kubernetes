@@ -1,0 +1,21 @@
+# template
+appName: TEMPLATE-myAppName
+image: lscr.io/linuxserver/repo:tag
+envVars:
+  - name: varName
+    value: value
+  - name: var2Name
+    value: value
+ports:
+  - name: portName
+    protocol: TCP
+    port: portNumber
+volumes:
+  - volumeName: volumeName
+    volumeMountPath: /path-in-pod
+    volumeType: pvc # pvc for longhorn persistent storage
+    volumeStorageInGi: volumeSize # only for pvc
+  - volumeName: volumeName
+    volumeMountPath: /path-in-pod
+    volumeHostPath: /path-of-mounted-volume-on-host # only for nfs
+    volumeType: nfs # nfs to connect to a nfs shared storage

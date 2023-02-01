@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: TEMPLATE-myAppName
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: longhorn-TEMPLATE-myAppName-volumeName-pvc
+  namespace: TEMPLATE-myAppName
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: volumeSizeGi
+  storageClassName: longhorn
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: TEMPLATE-myAppName-deployment
+  name: TEMPLATE-myAppName-deployment
+  namespace: TEMPLATE-myAppName
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: TEMPLATE-myAppName
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: TEMPLATE-myAppName
+    spec:
+      containers:
+      - env:
+        - name: varName
+          value: value
+        - name: var2Name
+          value: value
+        image: lscr.io/linuxserver/repo:tag
+        name: TEMPLATE-myAppName
+        ports:
+        - containerPort: portNumber
+        volumeMounts:
+        - mountPath: /path-in-pod
+          name: volumeName
+        - mountPath: /path-in-pod
+          name: volumeName
+      restartPolicy: Always
+      volumes:
+      - name: volumeName
+        persistentVolumeClaim:
+          claimName: longhorn-TEMPLATE-myAppName-volumeName-pvc
+      - hostPath:
+          path: /path-of-mounted-volume-on-host
+        name: volumeName
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: TEMPLATE-myAppName
+  name: TEMPLATE-myAppName-service
+  namespace: TEMPLATE-myAppName
+spec:
+  ports:
+  - name: portName
+    port: portNumber
+    protocol: TCP
+  selector:
+    app: TEMPLATE-myAppName
+  type: LoadBalancer
