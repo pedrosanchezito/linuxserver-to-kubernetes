@@ -26,31 +26,30 @@ pip install pyyaml
 
 Open `app_list.yaml` and add as many apps you want, separated by `---` for yaml to understand they are separated files (see the template in the file)
 
-Example:
+Example for [NextCloud](https://hub.docker.com/r/linuxserver/nextcloud)
 ```yaml
-appName: # the name of your app, will be used to name resources (namespace, deployment, pvc, service)
-image: # the linuxserver image you want to use (lscr.io/linuxserver/repo:tag)
-envVars: # list of environment variables, see the app description in linuxserver
-  - name: varName
-    value: value
-  - name: var2Name
-    value: value
-ports: # list of ports to expose, see the app description in linuxserver
-  - name: portName
+appName: nextcloud
+image: lscr.io/linuxserver/nextcloud:latest
+envVars:
+  - name: PUID
+    value: "1000"
+  - name: PGID
+    value: "1000"
+  - name: TZ
+    value: Europe/London
+ports:
+  - name: https
     protocol: TCP
-    port: portNumber
-volumes: # list of volumes needed by the app, see the app description in linuxserver.
-# 2 types available: 
-  # pvc for persistent storage on nodes through longhorn (usually for configuration)
-  # nfs to access content on a NAS or any network storage
-  - volumeName: volumeName
-    volumeMountPath: /path-in-pod
-    volumeType: pvc # pvc for longhorn persistent storage
-    volumeStorageInGi: volumeSize # only for pvc
-  - volumeName: volumeName
-    volumeMountPath: /path-in-pod
-    volumeHostPath: /path-of-mounted-volume-on-host # only for nfs
-    volumeType: nfs # nfs to connect to a nfs shared storage
+    port: 443
+volumes:
+  - volumeName: config
+    volumeMountPath: /config
+    volumeType: pvc
+    volumeStorageInGi: 10
+  - volumeName: data
+    volumeMountPath: /data
+    volumeHostPath: /home/pedro/nas/nextcloud/
+    volumeType: nfs
 ```
 
 When your `app_list.yaml` is ready, run the script:
