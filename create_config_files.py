@@ -67,7 +67,7 @@ try:
                     'name': f"{content['appName']}-deployment",
                     'namespace': content['appName'],
                     'labels': {
-                        'app': f"{content['appName']}-deployment"
+                        'app': content['appName']
                     }
                 },
                 'spec': {
